@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Movie123.MainPage"
+             xmlns:viewmodel="clr-namespace:Movie123.ViewModel"
+             x:DataType="viewmodel:MainViewModel"
+             xmlns:model="clr-namespace:Movie123.Model.Search"
+             
+             >
+
+<!--Ez az oldal a főoldal, amivel a felhasználó először találkozik, amikor megnyitja az alkalmazást-->
+    <ScrollView>
+        <Grid 
+              Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="500"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".50*"/>
+                <ColumnDefinition Width=".50*"/>
+            </Grid.ColumnDefinitions>
+            <!--Átdob a keresőoldalra-->
+            <Button Grid.ColumnSpan="1" Grid.Row="0" Grid.Column="0"
+                x:Name="SearchBtn"
+                Text="Search"
+                Command="{Binding NavToSearchCommand}"
+                HorizontalOptions="FillAndExpand" />
+            <!--Kilistázza a népszerű filmeket-->
+            <Button Grid.ColumnSpan="1" Grid.Row="0" Grid.Column="3"
+                x:Name="ListBtn"
+                Text="List Popular Movies"
+                Command="{Binding ListMoviesCommand}"
+                HorizontalOptions="FillAndExpand" />
+            <!--Léptet a népszerű filmek oldalai között-->
+            <Button Grid.ColumnSpan="1" Grid.Row="4" Grid.Column="0"
+                x:Name="PrevBtn"
+                Text="Previous Page"
+                Command="{Binding ListMoviesPreviousPageCommand}"
+                HorizontalOptions="FillAndExpand" />
+            <Button Grid.ColumnSpan="1" Grid.Row="4" Grid.Column="2"
+                x:Name="NextBtn"
+                Text="Next Page"
+                Command="{Binding ListMoviesNextPageCommand}"
+                HorizontalOptions="FillAndExpand" />
+            <!--Népszerű filmek listája-->
+            <CollectionView Grid.Row="2" Grid.ColumnSpan="2" 
+                            ItemsSource="{Binding TopList}" HorizontalOptions="FillAndExpand"
+                            SelectionMode="None"
+                            HeightRequest="500"
+                              >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Movie">
+                        <Frame>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=TapCommand}"
+                                                      CommandParameter="{Binding id}">
+
+                                </TapGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width=".60*"/>
+                                    <ColumnDefinition Width=".20*"/>
+                                    <ColumnDefinition Width=".20*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding title}" Grid.Row="0" Grid.Column="0"/>
+                                <HorizontalStackLayout Grid.Row="0" Grid.Column="2" HorizontalOptions="End">
+                                    
+                                    <Label Text="{Binding vote_average}" TextColor="#50C878" IsVisible="{Binding visibilityVoteAvarage}" HorizontalTextAlignment="End"/>
+                                    <Label Text="/10"  HorizontalTextAlignment="End"/>
+                                </HorizontalStackLayout>
+                                
+                            </Grid>
+                        </Frame>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
+    </ScrollView>
+    
+
+
+</ContentPage>

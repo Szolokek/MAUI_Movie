@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Movie123.View.SearchPage"
+             Title="Search"
+             xmlns:viewmodel="clr-namespace:Movie123.ViewModel"
+             x:DataType="viewmodel:SearchViewModel"
+             xmlns:model="clr-namespace:Movie123.Model.Search">
+    <ScrollView>
+        <Grid Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="500"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".50*"/>
+                <ColumnDefinition Width=".25*"/>
+                <ColumnDefinition Width=".25*"/>
+            </Grid.ColumnDefinitions>
+            <!--Kereső mező-->
+            <Entry Grid.Row="0" Grid.Column="0"
+                x:Name="entry"
+                      Placeholder="Enter text here"
+                      Text="{Binding Search_string}"
+                      />
+            <!--Search gomb-->
+            <Button Grid.Row="0" Grid.Column="1"
+                x:Name="SearchBtn"
+                Text="Search"
+                Command="{Binding GetSearchedMoviesCommand}"
+                    HorizontalOptions="FillAndExpand"
+                >
+            <!--Vissza a főoldalra gomb-->
+            </Button>
+            <Button Grid.Row="0" Grid.Column="2"
+                Text="Go Back"
+                Command="{Binding GoBackCommand}"
+                    HorizontalOptions="FillAndExpand">
+                
+            </Button>
+            <!--Keresési eredmények listája-->
+            <CollectionView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+                ItemsSource="{Binding Results}" HorizontalOptions="FillAndExpand"
+                            SelectionMode="None"
+                            HeightRequest="500">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Movie">
+                        <Frame>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SearchViewModel}}, Path=TapCommand}" CommandParameter="{Binding .}">
+
+                                </TapGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width=".60*"/>
+                                    <ColumnDefinition Width=".20*"/>
+                                    <ColumnDefinition Width=".20*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding title}" IsVisible="{Binding visibilityTitle}" Grid.Row="0" Grid.Column="0"/>
+                                <Label Text="{Binding name}" IsVisible="{Binding visibilityName}" Grid.Row="0" Grid.Column="0"/>
+                                <Label Text="{Binding media_type}" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End"/>
+                                <HorizontalStackLayout Grid.Row="0" Grid.Column="2" HorizontalOptions="End">
+                                    
+                                    <Label Text="{Binding vote_average}" TextColor="#50C878" IsVisible="{Binding visibilityVoteAvarage}" HorizontalTextAlignment="End"/>
+                                    <Label Text="/10"  HorizontalTextAlignment="End" IsVisible="{Binding visibilityVoteAvarage}"/>
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <!--Oldalváltó gombok-->
+            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1"
+                Text="Previous Page"
+                Command="{Binding GetSearchedMoviesPrevoiusPageAsyncCommand}"
+                    HorizontalOptions="FillAndExpand">
+
+            </Button>
+            <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+                Text="Next Page"
+                Command="{Binding GetSearchedMoviesNextPageAsyncCommand}">
+
+            </Button>
+        </Grid>
+        
+    </ScrollView>
+    
+</ContentPage>

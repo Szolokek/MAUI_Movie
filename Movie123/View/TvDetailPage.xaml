@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Movie123.View.TvDetailPage"
+             Title="Details"
+             xmlns:viewmodel="clr-namespace:Movie123.ViewModel"
+             x:DataType="viewmodel:TvDetailViewModel"
+             xmlns:model="clr-namespace:Movie123.Model.Tv">
+    <ScrollView>
+        <VerticalStackLayout Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".4*"/>
+                    <ColumnDefinition Width=".6*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" Source="{Binding TvDetail.imgsrc}" Aspect="Center"/>
+                <!--Details Grid-->
+                <Grid Grid.Row="0" Grid.Column="1" HorizontalOptions="Start">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <!--Adatok-->
+                    <Label Grid.Row="0" Text="{Binding TvDetail.name}" FontSize="50" LineBreakMode="WordWrap"
+                           VerticalOptions="Fill"
+                           MaximumWidthRequest="500"
+                           HorizontalOptions="Start"/>
+                    <HorizontalStackLayout Grid.Row="1">
+                        <Label Text="Release Date:" FontSize="20" Padding="0, 0, 10, 0"/>
+                        <Label Text="{Binding TvDetail.first_air_date}" FontSize="20" TextColor="LightGray"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Row="2">
+                        <Label Text="Rating:" Padding="0, 0, 10, 0"/>
+                        
+                        <Label Text="{Binding TvDetail.vote_average}" TextColor="#50C878"/>
+                        <Label Text="/10" TextColor="LightGray"/>
+                    </HorizontalStackLayout>
+                    
+                    <!--Genres Lista-->
+                    <Label Text="Genres:" Grid.Row="3" Padding="0,20,0,0"/>
+                    <CollectionView Grid.Row="4"
+                                    ItemsSource="{Binding TvDetail.genres}" 
+                                    HorizontalOptions="Start"
+                                    SelectionMode="None"
+                                    MinimumWidthRequest="100"
+                                    MaximumWidthRequest="300"
+                                    >
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Genre">
+                                <Label Text="{Binding name}" HorizontalOptions="Center" Padding="10,0,10,0" TextColor="LightGray"/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!--Overview-->
+                    <Label Text="Overview:" Grid.Row="5" FontSize="20"/>
+                    <ScrollView Grid.Row="6" MaximumHeightRequest="250">
+                        <Label Text="{Binding TvDetail.overview}" TextColor="LightGray"
+                           LineBreakMode="WordWrap"
+                           VerticalOptions="Fill"
+                           MaximumWidthRequest="500"
+                           HorizontalOptions="Start"
+                           />
+                    </ScrollView>
+                    
+
+
+
+
+                </Grid>
+            </Grid>
+            <!--Cast-->
+            <Label Text="Cast:" Padding="20,20,0,0" HorizontalOptions="Start" FontSize="Large"/>
+            <CollectionView 
+                            ItemsSource="{Binding TvCredit.cast}" 
+                            HorizontalOptions="Center"
+                            SelectionMode="None"
+                            Margin="20,0,20,0"
+                            >
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:TvCast">
+                        <Frame BackgroundColor="#312A2B">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:TvDetailViewModel}}, Path=TapCommand}"
+                                                      CommandParameter="{Binding id}">
+                                </TapGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                            <VerticalStackLayout>
+                                <Image Grid.Column="0" Source="{Binding imagesrc}" HeightRequest="138" WidthRequest="145"/>
+                                <Label Text="{Binding name}" HorizontalOptions="Center" Padding="10,10,10,0"/>
+                                <Label Text="{Binding character}" HorizontalOptions="Center" Padding="10,0,10,0" TextColor="LightSlateGray"/>
+                            </VerticalStackLayout>
+                        </Frame>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button
+                Text="Go Back Home"
+                Command="{Binding NavBackHomeCommand}"
+                HorizontalOptions="Start"
+                    Margin="20,20,0,0"
+                    MinimumWidthRequest="100"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

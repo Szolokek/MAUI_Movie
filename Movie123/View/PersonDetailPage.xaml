@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Movie123.View.PersonDetailPage"
+             Title="Details"
+             xmlns:viewmodel="clr-namespace:Movie123.ViewModel"
+             x:DataType="viewmodel:PersonDetailViewModel"
+             xmlns:model="clr-namespace:Movie123.Model.Person">
+    <ScrollView>
+        <VerticalStackLayout Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".4*"/>
+                    <ColumnDefinition Width=".6*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" Source="{Binding PersonDetail.imgsrc}" Aspect="Center"/>
+                <!--Details Grid-->
+                <Grid Grid.Row="0" Grid.Column="1" HorizontalOptions="Start">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <!--Adatok-->
+                    <Label Grid.Row="0" Text="{Binding PersonDetail.name}" FontSize="50" LineBreakMode="WordWrap"
+                           VerticalOptions="Fill"
+                           MaximumWidthRequest="500"
+                           HorizontalOptions="Start"/>
+                    <Label Grid.Row="1" Text="Personal Info:" FontSize="30" Padding="0, 0, 10, 0"/>
+                    <HorizontalStackLayout Grid.Row="2">
+                        <Label Text="Birthday:" FontSize="20" Padding="0, 0, 10, 0"/>
+                        <Label Text="{Binding PersonDetail.birthday}" FontSize="20" TextColor="LightGray"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Row="3">
+                        <Label Text="Known for:" Padding="0, 0, 10, 0" FontSize="20"/>
+                        <Label Text="{Binding PersonDetail.known_for_department}" FontSize="20" TextColor="LightGray"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Row="4">
+                        <Label Text="Place of birth:" Padding="0, 0, 10, 0" FontSize="20" />
+                        <Label Text="{Binding PersonDetail.place_of_birth}" FontSize="20" TextColor="LightGray"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Row="5">
+                        <Label Text="Gender:" Padding="0, 0, 10, 0" FontSize="20" />
+                        <Label Text="{Binding PersonDetail.gender_string}" FontSize="20" TextColor="LightGray"/>
+                    </HorizontalStackLayout>
+
+                    <!--Overview-->
+                    <Label Text="Biography:" Grid.Row="6" FontSize="30"/>
+                    <ScrollView Grid.Row="7" MaximumHeightRequest="250">
+                        <Label  Text="{Binding PersonDetail.biography}"
+                           LineBreakMode="WordWrap"
+                           VerticalOptions="Fill"
+                           MaximumWidthRequest="500"
+                           HorizontalOptions="Start"
+                           TextColor="LightGray"
+                           />
+                    </ScrollView>
+                </Grid>
+            </Grid>
+            
+            <!--Known for-->
+            <Label Text="Known For:" Padding="20,20,0,0" HorizontalOptions="Start" FontSize="Large"/>
+            <CollectionView 
+                            ItemsSource="{Binding PersonCombinedCredit.cast}" 
+                            HorizontalOptions="Center"
+                            SelectionMode="None"
+                            Margin="20,0,20,0"
+                            >
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Cast_Person">
+                        <Frame BackgroundColor="#312A2B">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:PersonDetailViewModel}}, Path=TapCommand}"
+                                                      CommandParameter="{Binding id}">
+                                </TapGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                            <VerticalStackLayout>
+                                <Image Source="{Binding imagesrc}" HeightRequest="138" WidthRequest="145"/>
+                                <Label Text="{Binding title}" HorizontalOptions="Center" Padding="10,10,10,0"/>
+                                <Label Text="{Binding character}" HorizontalOptions="Center" Padding="10,0,10,0" TextColor="LightSlateGray"/>
+                            </VerticalStackLayout>
+                        </Frame>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button
+                Text="Go Back Home"
+                Command="{Binding NavBackHomeCommand}"
+                HorizontalOptions="Start"
+                    Margin="20,20,0,0"
+                    MinimumWidthRequest="100"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
